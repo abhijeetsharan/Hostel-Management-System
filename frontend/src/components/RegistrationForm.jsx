@@ -33,12 +33,13 @@ const RegistrationForm = () => {
     }
 
     try {
-      const response = await axios.post('http://your-backlend-api.com/regisoter', {
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
         firstName: formData.firstName,
         lastName: formData.lastName,
         rollNumber: formData.rollNumber,
         email: formData.email,
         password: formData.password,
+        confirmPassword: formData.password,
       });
 
       if(response.status === 201) {

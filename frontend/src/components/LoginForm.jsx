@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
     rememberMe: false
   });
@@ -28,10 +28,10 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://your-api-url.com/api/login', {
-        username: formData.username,
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email: formData.email,
         password: formData.password,
-      })
+      });
 
       //Handle Succeessful login
       const data = response;
@@ -44,8 +44,9 @@ const LoginForm = () => {
       }
 
       //Redirect user to sashboard
-      window.location.href = '/';
+      window.location.href = '/dashboard';
     } catch (err) {
+      // console.log('Login error:', err);
       const errorMsg = 
         err.response.data.error.message || 'Something went wrong. Please try gain.';
       setError(errorMsg);
@@ -72,11 +73,11 @@ const LoginForm = () => {
 
           <div className="relative mb-6">
             <input
-              type="text"
-              name="username"
-              value={formData.username}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder="Username"
+              placeholder="Email"
               required
               className="w-full px-5 py-5 bg-transparent border-2 border-white/20 rounded-full outline-none text-white placeholder-white text-lg"
             />
