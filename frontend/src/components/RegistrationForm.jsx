@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import banner from '../assets/banner.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ const RegistrationForm = () => {
     confirmPassword: ''
   });
 
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -20,10 +24,31 @@ const RegistrationForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your registration logic here
-    console.log('Form submitted:', formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://your-backlend-api.com/regisoter', {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        rollNumber: formData.rollNumber,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if(response.status === 201) {
+        setSuccessMessage('Registration successful! Please log in.');
+        setError(null);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setSuccessMessage(null);
+    }
   };
 
   return (
@@ -39,6 +64,9 @@ const RegistrationForm = () => {
       <div className="w-[500px] p-8 rounded-lg border-2 border-white/30 backdrop-blur-md bg-transparent text-white shadow-lg">
         <form onSubmit={handleSubmit}>
           <h1 className="text-4xl font-bold text-center mb-8">Register</h1>
+
+          {error && <p className='text-red-500 text-center mb-4'>{error}</p>}
+          {successMessage && <p className='text-green-500 text-center mb-4'>{successMessage}</p>}
 
           {/* Name Fields */}
           <div className="grid grid-cols-2 gap-4 mb-6">
@@ -192,7 +220,7 @@ const RegistrationForm = () => {
           <div className="text-center mt-6 text-sm">
             <p>
               Already have an account?{' '}
-              <Link to="/" className="font-semibold hover:underline">
+              <Link to="/login" className="font-semibold hover:underline">
                 Login
               </Link>
             </p>

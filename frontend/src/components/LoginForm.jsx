@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import banner from '../assets/banner.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 const LoginForm = () => {
@@ -10,6 +11,9 @@ const LoginForm = () => {
     rememberMe: false
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -18,10 +22,36 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log('Form submitted:', formData);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post('http://your-api-url.com/api/login', {
+        username: formData.username,
+        password: formData.password,
+      })
+
+      //Handle Succeessful login
+      const data = response;
+      console.log(data);
+
+      if(formData.rememberMe) {
+        localStorage.setItem('authToken', data.token);
+      } else {
+        sessionStorage.setItem('authToken', data.token);
+      }
+
+      //Redirect user to sashboard
+      window.location.href = '/';
+    } catch (err) {
+      const errorMsg = 
+        err.response.data.error.message || 'Something went wrong. Please try gain.';
+      setError(errorMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,6 +67,8 @@ const LoginForm = () => {
       <div className="w-[420px] p-8 rounded-lg border-2 border-white/30 backdrop-blur-md bg-transparent text-white shadow-lg">
         <form onSubmit={handleSubmit}>
           <h1 className="text-4xl font-bold text-center mb-8">Login</h1>
+
+          {error && <p className='text-red-500 text-center mb-4'>{error}</p>}
 
           <div className="relative mb-6">
             <input
@@ -113,8 +145,9 @@ const LoginForm = () => {
           <button
             type="submit"
             className="w-full h-12 bg-white text-gray-800 rounded-full font-semibold text-lg shadow hover:bg-gray-100 transition-colors"
+            disabled = {loading}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
 
           <div className="text-center mt-6 text-sm">
