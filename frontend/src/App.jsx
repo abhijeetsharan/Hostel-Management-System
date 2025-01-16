@@ -6,20 +6,24 @@ import HomePage from './components/HomePage'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegistrationForm/>} />
-        <Route path='/dashboard' element={<Dashboard />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <ToastContainer />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </div>
   )
 }
 
