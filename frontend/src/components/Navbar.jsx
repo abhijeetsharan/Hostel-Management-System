@@ -3,21 +3,21 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import dropdown from '../assets/dropdown_icon.svg';
 import logo from '../assets/bitlogo.png';
-import menu from '../assets/menu_icon.svg'
-import cross from '../assets/cross_icon.png'
+import menu from '../assets/menu_icon.svg';
+import cross from '../assets/cross_icon.png';
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { token, setToken, userData } = useContext(AppContext);
 
   // Paths where the Navbar should not be displayed
   const excludedPaths = ['/login', '/register'];
   if (excludedPaths.includes(location.pathname)) {
     return null;
   }
-
-  const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken, userData } = useContext(AppContext);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -50,20 +50,38 @@ const Navbar = () => {
       {/* Right Section (User Profile or Login) */}
       <div className="absolute right-0 flex items-center gap-4 mr-5">
         {token && userData ? (
-          <div className="relative flex items-center gap-2 cursor-pointer group">
+          <div
+            className="relative flex items-center gap-2 cursor-pointer"
+            onMouseEnter={() => setShowDropdown(true)}
+            onMouseLeave={() => setShowDropdown(false)}
+          >
             {userData.image ? (
-              <img className="w-8 rounded-full" src={userData.image} alt="User" />
+              <img className="w-8 h-8 rounded-full" src={userData.image} alt="User" />
             ) : (
               <div className="w-8 h-8 bg-gray-300 rounded-full" />
             )}
             <img src={dropdown} alt="Dropdown icon" />
-            <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
-              <div className="min-w-48 bg-gray-50 rounded shadow-lg flex flex-col gap-4 p-4">
-                <p onClick={() => navigate('/my-profile')} className="hover:text-black cursor-pointer">My Profile</p>
-                <p onClick={() => navigate('/my-applications')} className="hover:text-black cursor-pointer">My Applications</p>
-                <p onClick={logout} className="hover:text-black cursor-pointer">Logout</p>
+            {showDropdown && (
+              <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg text-gray-600 z-20">
+                <div className="flex flex-col gap-4 p-4">
+                  <p
+                    onClick={() => navigate('/my-profile')}
+                    className="hover:text-black cursor-pointer"
+                  >
+                    My Profile
+                  </p>
+                  <p
+                    onClick={() => navigate('/my-applications')}
+                    className="hover:text-black cursor-pointer"
+                  >
+                    My Applications
+                  </p>
+                  <p onClick={logout} className="hover:text-black cursor-pointer">
+                    Logout
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         ) : (
           <button
@@ -75,28 +93,40 @@ const Navbar = () => {
         )}
 
         {/* Mobile Menu Icon */}
-        <img onClick={() => setShowMenu(true)} className='w-6 md:hidden cursor-pointer' src={menu} alt="Menu" />
+        <img
+          onClick={() => setShowMenu(true)}
+          className="w-6 md:hidden cursor-pointer"
+          src={menu}
+          alt="Menu"
+        />
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden ${showMenu ? 'fixed w-full top-0 right-0 bottom-0 bg-white z-20' : 'h-0 w-0'} overflow-hidden transition-all duration-300`}>
-        <div className='flex items-center justify-between px-5 py-6'>
-          <img src={logo} className='w-16' alt="Logo" />
-          <img onClick={() => setShowMenu(false)} src={cross} className='w-7 cursor-pointer' alt="Close Icon" />
+      <div
+        className={`md:hidden ${
+          showMenu ? 'fixed w-full top-0 right-0 bottom-0 bg-white z-20' : 'h-0 w-0'
+        } overflow-hidden transition-all duration-300`}
+      >
+        <div className="flex items-center justify-between px-5 py-6">
+          <img src={logo} className="w-16" alt="Logo" />
+          <img
+            onClick={() => setShowMenu(false)}
+            src={cross}
+            className="w-7 cursor-pointer"
+            alt="Close Icon"
+          />
         </div>
         <ul className="flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium">
-          <NavLink onClick={() => setShowMenu(false)} to="/" className="menu-item">
-            <p className="px-4 py-2 rounded-full inline-block">Home</p>
-          </NavLink>
-          <NavLink onClick={() => setShowMenu(false)} to="/application" className="menu-item">
-            <p className="px-4 py-2 rounded-full inline-block">Application Form</p>
-          </NavLink>
-          <NavLink onClick={() => setShowMenu(false)} to="/formstatus" className="menu-item">
-            <p className="px-4 py-2 rounded-full inline-block">Form Status</p>
-          </NavLink>
-          <NavLink onClick={() => setShowMenu(false)} to="/contact" className="menu-item">
-            <p className="px-4 py-2 rounded-full inline-block">Contact</p>
-          </NavLink>
+          {menuItems.map((item, index) => (
+            <NavLink
+              key={index}
+              onClick={() => setShowMenu(false)}
+              to={item.to}
+              className="menu-item"
+            >
+              <p className="px-4 py-2 rounded-full inline-block">{item.label}</p>
+            </NavLink>
+          ))}
         </ul>
       </div>
     </div>

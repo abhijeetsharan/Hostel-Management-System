@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import banner from '../assets/banner.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const LoginForm = () => {
@@ -36,6 +38,11 @@ const LoginForm = () => {
       //Handle Succeessful login
       const data = response;
       console.log(data);
+      
+      toast.success('Login successful!', {
+        position: "top-right",
+        autoClose: 3000,
+      })
 
       if(formData.rememberMe) {
         localStorage.setItem('authToken', data.token);
@@ -43,13 +50,20 @@ const LoginForm = () => {
         sessionStorage.setItem('authToken', data.token);
       }
 
-      //Redirect user to sashboard
-      window.location.href = '/dashboard';
+      //Redirect user to Dashboard
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 3000);
     } catch (err) {
       // console.log('Login error:', err);
       const errorMsg = 
         err.response.data.error.message || 'Something went wrong. Please try gain.';
       setError(errorMsg);
+
+      toast.error(errorMsg, {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -65,6 +79,7 @@ const LoginForm = () => {
         backgroundAttachment: 'fixed'
       }}
     >
+      <ToastContainer />
       <div className="w-[420px] p-8 rounded-lg border-2 border-white/30 backdrop-blur-md bg-transparent text-white shadow-lg">
         <form onSubmit={handleSubmit}>
           <h1 className="text-4xl font-bold text-center mb-8">Login</h1>
