@@ -3,8 +3,10 @@ import cors from "cors";
 import 'dotenv/config';
 import cookieParser from "cookie-parser";
 import connectDB from "./config/mongodb.js";
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 //Connect to the Database
 connectDB();
@@ -19,8 +21,8 @@ app.get('/', (req, res) => {
     res.send('API Working')
 })
 
-//Server setup
-const PORT = process.env.PORT || 5000;
+app.use('/api/auth', authRouter)
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })

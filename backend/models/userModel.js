@@ -13,14 +13,55 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        default:'0000000000'
+    },
+    image: {
+        type: String,
+        default: ''
+    },
+    address: {
+        type: Object,
+        default: { line1: '', line2: '' }
+    },
     email: {
         type: String,
         required: true,
         unique: true
     },
+    gender: {
+        type: String,
+        default: 'Not Selected'
+    },
+    dob: {
+        type: String,
+        default: 'Not Selected'
+    },
     password: {
         type: String,
         required: true
+    },
+    program: {
+        type: String,
+        default: 'Not Selected',
+    },
+    department: {
+        type: String,
+        default: 'Not Selected'
+    },
+    course: {
+        type: String,
+        default: 'Not Selected'
+    },
+    hostel: {
+        type: String,
+        default: ''
+    },
+    room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Room',
+        default: null
     },
     verifyOtp: {
         type: String,
