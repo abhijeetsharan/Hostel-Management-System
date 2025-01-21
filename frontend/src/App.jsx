@@ -1,28 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './App.css'
-import LoginForm from './components/LoginForm'
-import RegistrationForm from './components/RegistrationForm'
-import HomePage from './components/HomePage'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
-import Dashboard from './components/Dashboard'
-import { ToastContainer } from 'react-toastify'
+import React from 'react'
+import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import EmailVerify from './pages/EmailVerify';
+import ResetPassword from './pages/ResetPassword';
+import Dashboard from './pages/Dashboard';
 
-function App() {
-
+const App = () => {
   return (
     <div>
-      <BrowserRouter>
-        <ToastContainer />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<RegistrationForm />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <ToastContainer />
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/email-verify' element={<EmailVerify/>} />
+        <Route path='/reset-password' element={<ResetPassword/>} />
+        <Route path='/dashboard' element={<Dashboard/>} />
+      </Routes>
     </div>
   )
 }

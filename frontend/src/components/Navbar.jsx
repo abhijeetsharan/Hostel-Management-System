@@ -1,136 +1,71 @@
-import React, { useContext, useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
-import dropdown from '../assets/dropdown_icon.svg';
-import logo from '../assets/bitlogo.png';
-import menu from '../assets/menu_icon.svg';
-import cross from '../assets/cross_icon.png';
+import React, { useContext } from 'react'
+import { assets } from '../assets/assets'
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const { token, setToken, userData } = useContext(AppContext);
 
-  // Paths where the Navbar should not be displayed
-  const excludedPaths = ['/login', '/register'];
-  if (excludedPaths.includes(location.pathname)) {
-    return null;
+  const navigate = useNavigate()
+  const {userData, backendURL, setUserData, setIsLoggedin} = useContext(AppContext)
+
+  const sendVerificationOtp = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+
+      const {data} = await axios.post(backendURL + '/api/auth/send-verify-otp')
+
+      if(data.success){
+        navigate('/email-verify')
+        toast.success(data.message)
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(false);
-    navigate('/login');
-  };
+  const logout = async () => {
+    try {
+      axios.defaults.withCredentials = true
+      const { data } = await axios.post(backendURL + '/api/auth/logout')
+      data.success && setIsLoggedin(false)
+      data.success && setUserData(false)
+      navigate('/')
 
-  const menuItems = [
-    { to: '/', label: 'Home' },
-    { to: '/application', label: 'Application Form' },
-    { to: '/formstatus', label: 'Form Status' },
-    { to: '/contact', label: 'Contact' },
-  ];
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
 
   return (
-    <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-gray-300 bg-white shadow-md relative">
-      {/* Left Navigation Items */}
-      <div className="absolute left-0 flex items-center gap-5 ml-5 md:flex">
-        {menuItems.map((item, index) => (
-          <NavLink key={index} to={item.to} className="nav-item">
-            <li className="py-1">{item.label}</li>
-          </NavLink>
-        ))}
-      </div>
+    <div className='w-full flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0'>
 
-      <div className="mx-auto">
-        <p className="font-bold text-2xl text-blue-800">Hostel Management System</p>
-      </div>
-
-      {/* Right Section (User Profile or Login) */}
-      <div className="absolute right-0 flex items-center gap-4 mr-5">
-        {token && userData ? (
-          <div
-            className="relative flex items-center gap-2 cursor-pointer"
-            onMouseEnter={() => setShowDropdown(true)}
-            onMouseLeave={() => setShowDropdown(false)}
-          >
-            {userData.image ? (
-              <img className="w-8 h-8 rounded-full" src={userData.image} alt="User" />
-            ) : (
-              <div className="w-8 h-8 bg-gray-300 rounded-full" />
-            )}
-            <img src={dropdown} alt="Dropdown icon" />
-            {showDropdown && (
-              <div className="absolute top-full right-0 mt-2 bg-white shadow-lg rounded-lg text-gray-600 z-20">
-                <div className="flex flex-col gap-4 p-4">
-                  <p
-                    onClick={() => navigate('/my-profile')}
-                    className="hover:text-black cursor-pointer"
-                  >
-                    My Profile
-                  </p>
-                  <p
-                    onClick={() => navigate('/my-applications')}
-                    className="hover:text-black cursor-pointer"
-                  >
-                    My Applications
-                  </p>
-                  <p onClick={logout} className="hover:text-black cursor-pointer">
-                    Logout
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <button
-            onClick={() => navigate('/login')}
-            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block hover:bg-blue-600 transition-colors"
-          >
-            Create Account
-          </button>
-        )}
-
-        {/* Mobile Menu Icon */}
-        <img
-          onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden cursor-pointer"
-          src={menu}
-          alt="Menu"
-        />
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden ${
-          showMenu ? 'fixed w-full top-0 right-0 bottom-0 bg-white z-20' : 'h-0 w-0'
-        } overflow-hidden transition-all duration-300`}
-      >
-        <div className="flex items-center justify-between px-5 py-6">
-          <img src={logo} className="w-16" alt="Logo" />
-          <img
-            onClick={() => setShowMenu(false)}
-            src={cross}
-            className="w-7 cursor-pointer"
-            alt="Close Icon"
-          />
+      <img src={assets.logo} alt="" className='w-28 sm:w-32' />
+    {userData ? 
+    <div className='w-8 h-8 flex justify-center items-center rounded-full bg-black text-white relative group'>
+        {userData.name[0].toUpperCase()}
+        <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10'>
+            <ul className='list-none m-0 p-2 bg-gray-100 text-sm'>
+              {!userData.isAccountVerified && <li onClick={sendVerificationOtp} className='py-1 px-2
+              hover:bg-gray-200 cursor-pointer'>Verify email</li>
+              }
+              
+              <li onClick={logout} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Logout</li>
+            </ul>
         </div>
-        <ul className="flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium">
-          {menuItems.map((item, index) => (
-            <NavLink
-              key={index}
-              onClick={() => setShowMenu(false)}
-              to={item.to}
-              className="menu-item"
-            >
-              <p className="px-4 py-2 rounded-full inline-block">{item.label}</p>
-            </NavLink>
-          ))}
-        </ul>
-      </div>
     </div>
-  );
-};
 
-export default Navbar;
+    : <button onClick={()=>navigate('/login')} className='flex items-center gap-2 border border-gray-500 rounded-full px-6 py-2 text-gray-800 hover:bg-gray-100 transition-all'>
+      Login <img src={assets.arrow_icon} alt="" />
+      </button>
+    }
+      
+    </div>
+  )
+}
+
+export default Navbar

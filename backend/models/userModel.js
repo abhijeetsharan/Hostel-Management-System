@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     rollNumber: {
         type: String,
-        default: ''
+        default: null
     },
     phone: {
         type: String,
@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
     },
     hostel: {
         type: String,
-        default: ''
+        default: null
     },
     room: {
         type: mongoose.Schema.Types.ObjectId,
