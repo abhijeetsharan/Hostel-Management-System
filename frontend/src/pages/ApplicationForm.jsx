@@ -82,7 +82,7 @@ const ApplicationForm = () => {
   };
 
   return (
-    <div className='max-w-2xl mx-auto p-6 bg-white shadow-2xl rounded-lg'>
+    <div className='max-w-2xl mx-auto p-6 mt-20 bg-white shadow-2xl rounded-lg'>
       <h1 className='text-2xl font-bold mb-6 text-center'>Hostel Application Form</h1>
       <form onSubmit={handleSubmit} className='space-y-4'>
         {/* Name */}

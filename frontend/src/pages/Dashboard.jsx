@@ -12,16 +12,16 @@ const Dashboard = () => {
   })
 
   return (
-    <div className='space-y-6 mt-2 px-10 py-2'>
-      <h1 className='text-3xl font-bold text-blue-800 flex items-center justify-center'>DASHBOARD</h1>
+    <div className='space-y-6 mt-20 px-10 py-2'>
+      {/* <h1 className='text-3xl font-bold text-blue-800 flex items-center justify-center'>DASHBOARD</h1> */}
 
       <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
         
-        {/* Dashboard */}
-        <div className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
+        {/* Home */}
+        <div onClick={() => navigate('/')} className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
           <div className='flex items-center justify-between'>
             <div>
-              <p className='text-2xl font-medium text-gray-600'>Dashboard</p>
+              <p className='text-2xl font-medium text-gray-600'>Home</p>
               {/* <p className='text-2xl font-semibold text-gray-900'>{stats.totalStudents}</p> */}
             </div>
             <Users className='h-8 w-8 text-indigo-600' />
@@ -40,7 +40,7 @@ const Dashboard = () => {
         </div>
 
         {/* notifications */}
-        <div className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
+        <div onClick={() => navigate('/notifications')} className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-2xl font-medium text-gray-600'>Notifications</p>

@@ -9,11 +9,14 @@ import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import ApplicationForm from './pages/ApplicationForm';
 import ProtectedRoute from './components/protectedRoute';
+import Navbar from './components/Navbar';
+import Notifications from './pages/Notifications';
 
 const App = () => {
   return (
     <div>
       <ToastContainer />
+      <Navbar />
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/login' element={<Login/>} />
@@ -26,6 +29,7 @@ const App = () => {
         
         <Route path='/dashboard' element={<Dashboard/>} />
         <Route path='/application-form' element={<ApplicationForm/>} />
+        <Route path='/notifications' element={<Notifications/>} />
       </Routes>
     </div>
   )
