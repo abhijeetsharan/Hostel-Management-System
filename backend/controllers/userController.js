@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import Notification from "../models/notificationModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import Application from "../models/applicationModel.js";
 
@@ -74,3 +75,18 @@ export const submitApplication = async (req, res) => {
       res.status(500).json({ success: false, message: error.message });
     }
 };
+
+export const getNotifications = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+
+    const notifications = await Notification.find({
+      $or: [{ recipient: userId }, { recipient: null }],
+    }).sort({ dateSent: -1 })
+    
+    return res.json({ success: true, notifications })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}

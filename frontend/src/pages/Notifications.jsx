@@ -12,7 +12,7 @@ const Notifications = () => {
     //Fetch notifications from backend
     const fetchNotifications = async () => {
         try {
-            const response = await axios.get(backendURL + 'api/notifications', {
+            const response = await axios.get(backendURL + '/api/user/notifications', {
                 withCredentials: true,
             });
 

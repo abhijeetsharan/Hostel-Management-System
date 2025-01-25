@@ -1,6 +1,6 @@
 import express from 'express';
 import userAuth from '../middleware/userAuth.js';
-import { getUserData, submitApplication } from '../controllers/userController.js';
+import { getNotifications, getUserData, submitApplication } from '../controllers/userController.js';
 import {upload} from "../middleware/multer.js"
 
 const userRouter = express.Router();
@@ -20,5 +20,8 @@ userRouter.route("/submit").post(
 )
 
 userRouter.get('/data', userAuth, getUserData);
+
+//fetch notifications for the logged in user
+userRouter.get('/notifications', userAuth, getNotifications);
 
 export default userRouter;
