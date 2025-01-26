@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
-        default: null
+        default: '',
     },
     verifyOtp: {
         type: String,

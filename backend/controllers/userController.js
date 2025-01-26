@@ -1,6 +1,8 @@
 import userModel from "../models/userModel.js";
 import Notification from "../models/notificationModel.js";
 import Contact from "../models/contactModel.js";
+import roomModel from "../models/roomModel.js";
+import VacateRoomRequest from "../models/vacateRoomModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import Application from "../models/applicationModel.js";
 
@@ -116,5 +118,62 @@ export const submitContactForm = async (req, res) => {
     
   } catch (error) {
       res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+//Vacate room request form
+export const submitVacateRequest = async (req, res) => {
+  const { rollNumber, reason, additionalDetails, vacateDate } = req.body;
+
+  try {
+    if (!rollNumber || !reason || !vacateDate) {
+      return res.status(400).json({ success: false, message: 'Please fill all fields' })
+    }
+
+    // Validate Reason
+    const validReasons = ['internship', 'medical', 'personal'];
+    
+    if (!validReasons.includes(reason)) {
+      return res.status(400).json({ success: false, message: 'Invalid reason' })
+    }
+
+    //Vaidate VacateDate
+    const currentDate = new Date();
+    const inputDate = new Date(vacateDate);
+    if (inputDate <= currentDate) {
+      return res.status(400).json({ success: false, message: 'Invalid date' })
+    }
+
+    // Check if the student exists and is allocated a room
+    const student = await userModel.findOne({ rollNumber });
+    
+    if(!student){
+      return res.status(400).json({ success: false, message: 'Student not found' })
+    }
+    // Check if the student is allocated a room
+    // if (!student.room) {
+    //   return res.status(400).json({ success: false, message: 'Student is not allocated a room.' });
+    // }
+
+    // Check for duplicate pending requests
+    const existingRequest = await VacateRoomRequest.findOne({ rollNumber, status: 'pending' });
+    if (existingRequest) {
+      return res.status(400).json({ success: false, message: 'You have already submitted a vacate request.' });
+    }
+
+    //create a new vacate room request
+    const vacateRequest = new VacateRoomRequest({
+      rollNumber,
+      reason,
+      additionalDetails,
+      vacateDate,
+    });
+    await vacateRequest.save();
+
+    res.status(201).json({ success: true, message: 'Vacate room request submitted successfully' })
+
+  } catch (error) {
+    console.error('Error submitting vacate room request:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while submitting the request.' });
   }
 }

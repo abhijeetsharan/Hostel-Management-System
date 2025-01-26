@@ -4,7 +4,6 @@ const roomSchema = new mongoose.Schema({
     roomNumber: {
         type: String,
         required: true,
-        unique: true
     },
     roomType: {
         type: String,
@@ -17,8 +16,9 @@ const roomSchema = new mongoose.Schema({
         required: true
     },
     occupants: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'User',
+        default: []
     },
 })
 

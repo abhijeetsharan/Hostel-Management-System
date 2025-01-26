@@ -12,6 +12,7 @@ import ProtectedRoute from './components/protectedRoute';
 import Navbar from './components/Navbar';
 import Notifications from './pages/Notifications';
 import Contact from './pages/Contact';
+import VacateRoomForm from './pages/VacateRoomForm';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         
         <Route path='/dashboard' element={<Dashboard/>} />
         <Route path='/application-form' element={<ApplicationForm/>} />
+        <Route path='/vacate' element={<VacateRoomForm/>} />
         <Route path='/notifications' element={<Notifications/>} />
         <Route path='/contact' element={<Contact/>} />
       </Routes>
