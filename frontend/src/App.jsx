@@ -11,6 +11,7 @@ import ApplicationForm from './pages/ApplicationForm';
 import ProtectedRoute from './components/protectedRoute';
 import Navbar from './components/Navbar';
 import Notifications from './pages/Notifications';
+import Contact from './pages/Contact';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/dashboard' element={<Dashboard/>} />
         <Route path='/application-form' element={<ApplicationForm/>} />
         <Route path='/notifications' element={<Notifications/>} />
+        <Route path='/contact' element={<Contact/>} />
       </Routes>
     </div>
   )

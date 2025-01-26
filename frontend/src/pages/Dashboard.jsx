@@ -50,8 +50,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Rooms Card */}
-        <div className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
+        {/* Contact Card */}
+        <div onClick={() => navigate('/contact')} className='bg-white rounded-lg shadow p-6 hover:bg-slate-300'>
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-2xl font-medium text-gray-600'>Contact</p>

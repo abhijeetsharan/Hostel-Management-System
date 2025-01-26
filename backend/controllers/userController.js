@@ -1,5 +1,6 @@
 import userModel from "../models/userModel.js";
 import Notification from "../models/notificationModel.js";
+import Contact from "../models/contactModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import Application from "../models/applicationModel.js";
 
@@ -76,6 +77,7 @@ export const submitApplication = async (req, res) => {
     }
 };
 
+//Notification COntroller
 export const getNotifications = async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -88,5 +90,31 @@ export const getNotifications = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+//Contact Page controller
+export const submitContactForm = async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    
+    if(!name || !email || !message){
+      return res.status(400).json({ success: false, message: 'Please fill all fields' });
+    }
+
+    //Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: 'Invalid email address' })
+    }
+
+    //Save the contact form data to the database
+    const contact = new Contact({ name, email, message });
+    await contact.save();
+
+    res.status(201).json({ success: true, message: 'Thank you for contacting us! We will get back to you soon.' });
+    
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message })
   }
 }
