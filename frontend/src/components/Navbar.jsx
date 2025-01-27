@@ -63,6 +63,7 @@ const Navbar = () => {
               hover:bg-gray-200 cursor-pointer'>Verify email</li>
               }
 
+              <li onClick={() => navigate(('/profile'))} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Profile</li>
               <li onClick={logout} className='py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10'>Logout</li>
             </ul>
           </div>

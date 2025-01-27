@@ -5,6 +5,7 @@ import roomModel from "../models/roomModel.js";
 import VacateRoomRequest from "../models/vacateRoomModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import Application from "../models/applicationModel.js";
+import mongoose from 'mongoose';
 
 export const getUserData = async (req, res) => {
     try {
@@ -175,5 +176,64 @@ export const submitVacateRequest = async (req, res) => {
   } catch (error) {
     console.error('Error submitting vacate room request:', error);
     res.status(500).json({ success: false, message: 'An error occurred while submitting the request.' });
+  }
+}
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    
+    // Validate userId
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ success: false, message: 'Invalid or missing user ID' });
+    }
+
+    // Retrieve user profile
+    const userdata = await userModel
+      .findById(userId)
+      .select('-password -verifyOtp -verifyOtpExpireAt -__v -resetOtp -resetOtpExpireAt -isAccountVerified -_id'); // Exclude sensitive fields like password
+
+    // Check if user exists
+    if (!userdata) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Return the user data
+    res.status(200).json({ success: true, user: userdata });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while fetching the user profile' });
+  }
+}
+
+export const updateUserProfile = async (req, res) => {
+  const { userId } = req.body;
+  
+  const updatedData = req.body;
+
+  try {
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Fields that shouldn't be updated
+    const uneditableFields = ['name', 'email', 'hostel', 'room'];
+
+    uneditableFields.forEach((field) => {
+      if (updatedData[field]) {
+        delete updatedData[field];
+      }
+    });
+
+    // Update the user document
+    Object.assign(user, updatedData);
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Profile updated successfully', user });
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 }

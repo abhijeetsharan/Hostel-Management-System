@@ -24,6 +24,9 @@ const Login = () => {
         const { data } = await axios.post(backendURL + '/api/auth/register', {name, email, password})
 
         if(data.success){
+          // Save userId in localStorage
+          localStorage.setItem('userId', data.userId)
+
           setIsLoggedin(true)
           getUserData()
           navigate('/')
@@ -34,6 +37,9 @@ const Login = () => {
         const { data } = await axios.post(backendURL + '/api/auth/login', {email, password})
 
         if(data.success){
+        // Save userId to localStorage after successful login
+        localStorage.setItem('userId', data.userId);
+
           setIsLoggedin(true)
           getUserData()
           navigate('/')

@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import Notifications from './pages/Notifications';
 import Contact from './pages/Contact';
 import VacateRoomForm from './pages/VacateRoomForm';
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/login' element={<Login/>} />
+        <Route path='/profile' element={<Profile/>} />
         <Route path='/email-verify' element={<EmailVerify/>} />
         <Route path='/reset-password' element={<ResetPassword/>} />
 

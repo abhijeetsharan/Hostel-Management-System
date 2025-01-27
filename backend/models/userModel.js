@@ -7,15 +7,13 @@ const userSchema = new mongoose.Schema({
     },
     rollNumber: {
         type: String,
-        default: null
+        default: ''
     },
     phone: {
         type: String,
-        default:'0000000000'
     },
     image: {
         type: String,
-        default: ''
     },
     address: {
         type: Object,
@@ -28,6 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        enum: ['Not Selected', 'Male', 'Female', 'Other'],
         default: 'Not Selected'
     },
     dob: {
@@ -40,24 +39,23 @@ const userSchema = new mongoose.Schema({
     },
     program: {
         type: String,
-        default: 'Not Selected',
+        default: ''
     },
     department: {
         type: String,
-        default: 'Not Selected'
+        default: ''
     },
     course: {
         type: String,
-        default: 'Not Selected'
+        default: ''
     },
     hostel: {
         type: String,
-        default: null
+        default: ''
     },
     room: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room',
-        default: '',
+        type: String,
+        default: ''
     },
     verifyOtp: {
         type: String,
@@ -79,7 +77,9 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-})
+}, {
+    timestamps: true
+});
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema)
 
