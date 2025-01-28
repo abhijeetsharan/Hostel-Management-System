@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { toast } from 'react-toastify';
 import { AppContext } from '../context/AppContext';
+import DashboardCard from '../components/DashboardCard';
 
 const Contact = () => {
     const { backendURL } = useContext(AppContext)
@@ -36,7 +37,8 @@ const Contact = () => {
     }
   return (
     <div className='mt-20 px- sm:px-20'>
-      <h1 className='text-3xl font-bold text-center mb-8'>Contact Us</h1>
+        <DashboardCard />
+      <h1 className='text-3xl font-bold text-center mt-10 mb-8'>Contact Us</h1>
 
       {/* Contact Information */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8 mb-12'>

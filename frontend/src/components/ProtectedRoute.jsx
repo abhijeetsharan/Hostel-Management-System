@@ -3,9 +3,9 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 
 const ProtectedRoute = () => {
-    const {isLoggedin} = useContext(AppContext)
+    const {setIsLoggedin} = useContext(AppContext)
 
-    if(!isLoggedin){
+    if(!setIsLoggedin){
         return <Navigate to="/login"/>
     }
   return (
@@ -14,3 +14,4 @@ const ProtectedRoute = () => {
 }
 
 export default ProtectedRoute
+ 

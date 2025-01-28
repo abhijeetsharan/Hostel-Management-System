@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import DashboardCard from '../components/DashboardCard';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
@@ -32,8 +33,9 @@ const Notifications = () => {
     }, []);
 
   return (
-    <div className='mt-20 p-6'>
-      <h1 className='text-2xl font-bold mb-6'>Notifications</h1>
+    <div className='mt-20 px- sm:px-20'>
+        <DashboardCard />
+      <h1 className='text-2xl font-bold mt-10 mb-6'>Notifications</h1>
 
       {/* Notifictions */}
       <div className='space-y-4'>

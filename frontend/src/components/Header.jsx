@@ -27,7 +27,7 @@ const Header = () => {
 
       <button 
         onClick={handleGetStarted} 
-        className='border border-gray-500 rounded-full px-8 py-2.5 hover:bg-gray-100 transition-all'>Get Started</button>
+        className='border border-gray-500 rounded-full px-8 py-2.5 hover:bg-gray-100 transition-all'>{userData ? 'Dashboard' : "Get Started"}</button>
     </div>
   );
 };
