@@ -39,6 +39,13 @@ export const loginAdmin = async (req, res) => {
             { expiresIn: "7d" }
         );
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production'? 'none' :'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days cookie expiration time
+        });
+
         res.json({ success: true, token, role: admin.role });
     } catch (error) {
         console.log(error);
@@ -49,6 +56,10 @@ export const loginAdmin = async (req, res) => {
 export const addAdmin = async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
+        
+        if (!name ||!email ||!password ||!role) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
 
         // Ensure admin doesn't already exist
         const existingAdmin = await Admin.findOne({ email });
@@ -75,3 +86,40 @@ export const addAdmin = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
+export const logout = (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production'? 'none' :'strict',
+        });
+
+        return res.status(200).json({ success: true, message: "Logged out" });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const isAuthenticated = (req, res) => {
+    // Check if admin is authenticated
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+        
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Not authenticated" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        return res.status(200).json({
+            success: true,
+            message: "Authenticated",
+            user: { id: decoded.id, email: decoded.email, role: decoded.role }
+        });
+        
+    } catch (error) {
+        return res.json({ success: false, message: "Server error" });
+    }
+}
