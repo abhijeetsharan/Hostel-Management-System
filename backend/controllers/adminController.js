@@ -131,3 +131,26 @@ export const isAuthenticated = (req, res) => {
         return res.json({ success: false, message: "Server error" });
     }
 }
+
+export const getAllAdmins = async (req, res) => {
+    try {
+       const admins = await Admin.find({}, "-password");
+       res.status(200).json({ success: true, data: admins || [] });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
+export const deleteAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const admin = await Admin.findById(id);
+        if (!admin) {
+            return res.status(404).json({ success: false, message: "Admin not found" });
+        }
+        await Admin.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Admin deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
