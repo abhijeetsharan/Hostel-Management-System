@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Applications from './pages/Applications'
-import AllocateRooms from './pages/AllocateRooms'
+import ContactForms from './pages/ContactForms'
 import PostNotifications from './pages/PostNotifications'
 import AdminManagement from './pages/AdminManagement'
 import Stats from './pages/Stats'
@@ -21,7 +21,7 @@ const App = () => {
         <Route path='/' element={<Login />} />
         <Route path='/dashboard' element={<ProtectedRoute><Dashboard /> </ProtectedRoute>} />
         <Route path='applications' element={<ProtectedRoute> <Applications /> </ProtectedRoute>} />
-        <Route path='/allocate' element={<ProtectedRoute><AllocateRooms /> </ProtectedRoute>} />
+        <Route path='/contact' element={<ProtectedRoute><ContactForms /> </ProtectedRoute>} />
         <Route path='/notifications' element={<ProtectedRoute> <PostNotifications /></ProtectedRoute>} />
         <Route path='/stats' element={<ProtectedRoute> <Stats /> </ProtectedRoute>} />
         <Route path='/admins' element={<ProtectedRoute> <AdminManagement /></ProtectedRoute>} />

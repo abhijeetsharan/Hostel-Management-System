@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import { Admin } from "../models/adminModel.js";
+import Contact from "../models/contactModel.js";
 
 dotenv.config();
 
@@ -150,6 +151,29 @@ export const deleteAdmin = async (req, res) => {
         }
         await Admin.findByIdAndDelete(id);
         res.status(200).json({ success: true, message: "Admin deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
+export const getContactMessages = async (req, res) => {
+    try {
+        const messages = await Contact.find().sort({ dateSent: -1 });
+        res.status(200).json({ success: true, data: messages || [] });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching messages" });
+    }
+}
+
+export const deleteContactMessage = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const message = await Contact.findById(id);
+        if(!message) {
+            return res.status(404).json({ success: false, message: "Message not found" });
+        }
+        await Contact.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Message deleted successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error" });
     }

@@ -1,6 +1,6 @@
 import express from 'express';
 import adminAuth from '../middleware/adminAuth.js';
-import { addAdmin, deleteAdmin, getAllAdmins, isAuthenticated, loginAdmin, logout } from '../controllers/adminController.js';
+import { addAdmin, deleteAdmin, deleteContactMessage, getAllAdmins, getContactMessages, isAuthenticated, loginAdmin, logout } from '../controllers/adminController.js';
 
 const adminRouter = express.Router();
 
@@ -15,6 +15,10 @@ adminRouter.post('/add-admin', adminAuth(["superadmin"]), addAdmin);
 
 // delete admin
 adminRouter.delete('/delete-admin/:id', adminAuth(["superadmin"]), deleteAdmin);
+
+//Contact Form Routes
+adminRouter.get("/messages", getContactMessages);
+adminRouter.delete("/delete/:id", deleteContactMessage);
 
 
 export default adminRouter;

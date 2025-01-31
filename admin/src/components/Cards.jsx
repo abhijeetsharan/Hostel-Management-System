@@ -10,7 +10,7 @@ const DashboardCard = () => {
         { label: "Notifications", icon: Bell, path: "/notifications" },
         { label: "Rooms", icon: Building2, path: "/stats" },
         { label: "Students", icon: Users, path: "/stats" },
-        { label: "Contact Forms", icon: MessageSquare, path: "/allocate" },
+        { label: "Contact Forms", icon: MessageSquare, path: "/contact" },
         { label: "Admin Management", icon: UserCog, path: "/admins" }
     ];
 
