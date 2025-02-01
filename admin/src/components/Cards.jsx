@@ -1,8 +1,12 @@
 import { LayoutDashboard, FileText, Bell, Building2, MessageSquare, Users, UserCog } from 'lucide-react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
 const DashboardCard = () => {
     const navigate = useNavigate();
+    const { user } = useContext(AppContext)
+    
 
     const cardData = [
         { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
@@ -13,6 +17,11 @@ const DashboardCard = () => {
         { label: "Contact Forms", icon: MessageSquare, path: "/contact" },
         { label: "Admin Management", icon: UserCog, path: "/admins" }
     ];
+
+    // Only allow Super Admins to access Admin Managemnt
+    // if (user?.role === "superadmin"){
+    //     cardData.push({ label: "Admin Management", icon: UserCog, path: "/admins" });
+    // }
 
     return (
         <div className='space-y-6 mt-40 sm:mt-20 px-20 py-2'>

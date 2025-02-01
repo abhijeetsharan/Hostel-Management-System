@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { backendURL, setIsLoggedIn } = useContext(AppContext);
+    const { backendURL, setIsLoggedIn, setUser } = useContext(AppContext);
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -32,6 +32,7 @@ const Login = () => {
             if (data.success) {
                 localStorage.setItem("token", data.token)
                 setIsLoggedIn(true)
+                // setUser(data.user)
                 toast.success('Logged in successfully')
                 navigate('/dashboard')
             } else {
@@ -69,7 +70,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <button className='w-full py-2.5 rounded-full bg-indigo-500 text-white font-medium'>Login</button>
+                    <button className='w-full py-2.5 rounded-full bg-indigo-500 text-white font-medium cursor-pointer'>Login</button>
                 </form>
             </div>
         </div>
