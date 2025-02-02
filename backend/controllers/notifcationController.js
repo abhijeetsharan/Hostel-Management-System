@@ -1,3 +1,4 @@
+import { Admin } from "../models/adminModel.js";
 import Notification from "../models/notificationModel.js";
 
 export const createNotification = async (req, res) => {
@@ -22,23 +23,20 @@ export const createNotification = async (req, res) => {
     }
 }
 
-// export const getNotifications = async(req, res) => {
-//     try {
-//         let notifications;
-
-//         if(req.admin.role === "superadmin" || req.admin.role === "admin"){
-//             // Admins can see all notifications
-//             notifications = await Notification.find().populate("recipient", "name email");
-//         } else {
-//             // Users can only see their own notifications
-//             notifications = await Notification.find({ recipient: req.admin._id });
-//         }
+export const getNotifications = async(req, res) => {
+    try {
+        const adminId = req.body.adminId
+    
+        const notifications = await Notification.find({
+          $or: [{ recipient: adminId }, { recipient: null }],
+        }).sort({ dateSent: -1 })
         
-//         res.status(200).json({ success: true, notifications });
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: "Server error", error: error.message })
-//     }
-// };
+        return res.json({ success: true, notifications })
+    
+      } catch (error) {
+        res.status(500).json({ success: false, message: error.message })
+      }
+};
 
 export const deleteNotification = async (req, res) => {
     try {
