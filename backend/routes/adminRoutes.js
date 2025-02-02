@@ -1,6 +1,6 @@
 import express from 'express';
 import adminAuth from '../middleware/adminAuth.js';
-import { addAdmin, allocateRoom, deleteAdmin, deleteContactMessage, getAllAdmins, getApplications, getContactMessages, isAuthenticated, loginAdmin, logout, updateApplicationStatus } from '../controllers/adminController.js';
+import { addAdmin, allocateRoom, deleteAdmin, deleteContactMessage, getAllAdmins, getApplications, getContactMessages, getVacateRequests, isAuthenticated, loginAdmin, logout, updateApplicationStatus, updateVacateRequestStatus } from '../controllers/adminController.js';
 
 const adminRouter = express.Router();
 
@@ -29,6 +29,12 @@ adminRouter.put('/applications/:id/status', adminAuth(["superadmin", "admin"]), 
 
 // Allocate Hostel & Room (Admin only)
 adminRouter.put('/applications/:id/allocate', adminAuth(["superadmin", "admin"]), allocateRoom);
+
+// Vacate Room Requests APIs
+adminRouter.get("/vacate-requests", adminAuth(["superadmin", "admin"]), getVacateRequests);
+
+//Vacate room status APi
+adminRouter.put("/vacate-requests/:id/status", adminAuth(["superadmin", "admin"]), updateVacateRequestStatus);
 
 
 export default adminRouter;

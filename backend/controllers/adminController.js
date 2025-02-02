@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { Admin } from "../models/adminModel.js";
 import Contact from "../models/contactModel.js";
 import Application from "../models/applicationModel.js";
+import VacateRoomRequest from "../models/vacateRoomModel.js";
 
 dotenv.config();
 
@@ -254,7 +255,6 @@ export const updateApplicationStatus = async (req, res) => {
   }
 };
 
-
 export const allocateRoom = async (req, res) => {
   try {
     const { id } = req.params;
@@ -291,5 +291,47 @@ export const allocateRoom = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// Get all vacate room requests (admin can view all)
+export const getVacateRequests = async (req, res) => {
+  try {
+    const requests = await VacateRoomRequest.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, requests });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+
+// Update the status of a vacate room request (approve/reject)
+export const updateVacateRequestStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate status value
+    if (!["pending", "approved", "rejected"].includes(status)) {
+      return res.status(400).json({ success: false, message: "Invalid status value" });
+    }
+
+    const request = await VacateRoomRequest.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true } // Return the updated document
+    );
+
+    if (!request) {
+      return res.status(404).json({ success: false, message: "Vacate request not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Vacate request status updated to ${status}`,
+      request,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
