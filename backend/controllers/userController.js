@@ -32,6 +32,7 @@ export const submitApplication = async (req, res) => {
     try {
       const { name, rollnumber, phone, address, dob, email, roomType, gender, program, department, course } = req.body;
       
+      
       // Validate required fields
       if (
         [name, rollnumber, phone, address, dob, email, roomType, gender, program, department, course].some(

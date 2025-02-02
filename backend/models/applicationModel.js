@@ -14,6 +14,9 @@ const applicationSchema = new mongoose.Schema({
   course: { type: String, required: true },
   admissionReceipt: { type: String, required: true }, // Cloudinary URL
   feeReceipt: { type: String, required: true }, // Cloudinary URL
+  status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" }, //Add this field
+  allocatedHostel: { type: String, default: null },
+  allocatedRoom: { type: String, default: null }
 });
 
 const Application = mongoose.model('Application', applicationSchema);
