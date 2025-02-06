@@ -1,27 +1,31 @@
 import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema({
+    hostel: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hostel',
+        required: true
+    },
     roomNumber: {
-        type: String,
-        required: true,
-    },
-    roomType: {
-        type: String,
-        enum: ['single', 'double', 'triple'],
+        type: Number,
         required: true
     },
-    roomStatus: {
-        type: String,
-        enum: ['available', 'occupied'],
-        required: true
+    capacity: {
+        type: Number,
+        default: 2
     },
-    occupants: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'User',
-        default: []
-    },
-})
+    allocatedStudents: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
+});
 
-const roomModel = mongoose.models.room || mongoose.model('room', roomSchema)
+// Ensure room numbers are unique per hostel
+roomSchema.index({ hostel: 1, roomNumber: 1 }, { unique: true });
 
-export default roomModel;
+
+
+const Room = mongoose.model("Room", roomSchema);
+export default Room;

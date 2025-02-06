@@ -12,7 +12,7 @@ const DashboardCard = () => {
         { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
         { label: "Applications", icon: FileText, path: "/applications" },
         { label: "Notifications", icon: Bell, path: "/notifications" },
-        { label: "Rooms", icon: Building2, path: "/stats" },
+        { label: "Hostels", icon: Building2, path: "/hostels" },
         { label: "Students", icon: Users, path: "/stats" },
         { label: "Contact Forms", icon: MessageSquare, path: "/contact" },
         { label: "Admin Management", icon: UserCog, path: "/admins" }

@@ -10,6 +10,7 @@ import PostNotifications from './pages/PostNotifications'
 import AdminManagement from './pages/AdminManagement'
 import Stats from './pages/Stats'
 import Navbar from './components/Navbar';
+import ManageHostels from './pages/ManageHostels'
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/notifications' element={<ProtectedRoute> <PostNotifications /></ProtectedRoute>} />
         <Route path='/stats' element={<ProtectedRoute> <Stats /> </ProtectedRoute>} />
         <Route path='/admins' element={<ProtectedRoute> <AdminManagement /></ProtectedRoute>} />
+        <Route path='/hostels' element={<ProtectedRoute> < ManageHostels/> </ProtectedRoute>} />
       </Routes>
     </div>
   )
