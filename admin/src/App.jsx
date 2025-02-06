@@ -12,6 +12,7 @@ import Stats from './pages/Stats'
 import Navbar from './components/Navbar';
 import ManageHostels from './pages/ManageHostels'
 import ProtectedRoute from "./utils/ProtectedRoute";
+import RoomsPage from './pages/RoomsPage';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/stats' element={<ProtectedRoute> <Stats /> </ProtectedRoute>} />
         <Route path='/admins' element={<ProtectedRoute> <AdminManagement /></ProtectedRoute>} />
         <Route path='/hostels' element={<ProtectedRoute> < ManageHostels/> </ProtectedRoute>} />
+        <Route path='/hostel/:hostelId' element={<ProtectedRoute> <RoomsPage/> </ProtectedRoute>} />
       </Routes>
     </div>
   )

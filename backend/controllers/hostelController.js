@@ -37,7 +37,7 @@ export const createHostel = async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
-}
+};
 
 export const getHostels = async (req, res) => {
     try {
@@ -46,7 +46,7 @@ export const getHostels = async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
-}
+};
 
 export const deleteHostel = async (req, res) => {
     try {
@@ -60,6 +60,36 @@ export const deleteHostel = async (req, res) => {
         await Room.deleteMany({ hostel: hostelId });
 
         res.status(200).json({ success: true, message: "Hostel and its rooms deleted" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+export const getRoomsByHostel = async (req, res) => {
+    try {
+        const { hostelId } = req.params;
+        const { page = 1, limit = 20 } = req.query; // Default to page 1, limit 10 per page
+
+        // Find the hostel
+        const hostel = await Hostel.findById(hostelId);
+        if (!hostel) {
+            return res.status(404).json({ success: false, message: "Hostel not found" });
+        }
+
+        // Paginate rooms
+        const totalRooms = await Room.countDocuments({ hostel: hostelId });
+        const rooms = await Room.find({ hostel: hostelId })
+            .populate("allocatedStudents", "name rollNumber") // Populate student details
+            .skip((page - 1) * limit) // Skip rooms based on page
+            .limit(parseInt(limit)); // Limit the number of results per page
+
+        res.status(200).json({
+            success: true,
+            hostelName: hostel.name,
+            rooms,
+            totalPages: Math.ceil(totalRooms / limit),
+            currentPage: parseInt(page),
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
