@@ -18,7 +18,7 @@ export const AppContextProvider = (props) => {
             const { data } = await axios.get(backendURL + '/api/admin/is-admin');
             if (data.success) {
                 setIsLoggedIn(true);
-                // setUser(data.user)
+                setUser(data.user)
             }
         } catch (error) {
             toast.error(error.message);

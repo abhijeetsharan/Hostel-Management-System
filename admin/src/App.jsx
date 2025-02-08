@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import ManageHostels from './pages/ManageHostels'
 import ProtectedRoute from "./utils/ProtectedRoute";
 import RoomsPage from './pages/RoomsPage';
+import RoomAllocation from './pages/RoomAllocation';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
         <Route path='/admins' element={<ProtectedRoute> <AdminManagement /></ProtectedRoute>} />
         <Route path='/hostels' element={<ProtectedRoute> < ManageHostels/> </ProtectedRoute>} />
         <Route path='/hostel/:hostelId' element={<ProtectedRoute> <RoomsPage/> </ProtectedRoute>} />
+        <Route path='/allocate' element={<ProtectedRoute> <RoomAllocation/> </ProtectedRoute>} />
       </Routes>
     </div>
   )

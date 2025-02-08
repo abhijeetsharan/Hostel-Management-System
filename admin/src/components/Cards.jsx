@@ -7,6 +7,7 @@ const DashboardCard = () => {
     const navigate = useNavigate();
     const { user } = useContext(AppContext)
     
+    
 
     const cardData = [
         { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
@@ -15,7 +16,8 @@ const DashboardCard = () => {
         { label: "Hostels", icon: Building2, path: "/hostels" },
         { label: "Students", icon: Users, path: "/stats" },
         { label: "Contact Forms", icon: MessageSquare, path: "/contact" },
-        { label: "Admin Management", icon: UserCog, path: "/admins" }
+        { label: "Admin Management", icon: UserCog, path: "/admins" },
+        { label: "Room Allocation", icon: Building2, path: "/allocate"}
     ];
 
     // Only allow Super Admins to access Admin Managemnt
