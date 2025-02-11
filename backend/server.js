@@ -20,7 +20,14 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
-app.use(cors({origin: process.env.CORS_ORIGIN, credentials: true}))
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN || "https://your-frontend-url.com",
+        credentials: true,
+        methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+        allowedHeaders: "Content-Type,Authorization",
+    })
+);
 
 //API Endpoints
 app.get('/', (req, res) => {
