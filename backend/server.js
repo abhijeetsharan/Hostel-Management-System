@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || "https://your-frontend-url.com",
+        origin: process.env.CORS_ORIGIN || "https://bit-mesra-hostel.onrender.com",
         credentials: true,
         methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
         allowedHeaders: "Content-Type,Authorization",
