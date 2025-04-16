@@ -22,11 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(
     cors({
-<<<<<<< HEAD
         origin: process.env.CORS_ORIGIN || "https://bit-mesra-hostel.vercel.app",
-=======
-        origin: process.env.CORS_ORIGIN || "https://bit-mesra-hostel.onrender.com",
->>>>>>> 1a4c60d8c5b8582bf895f667fbed5973a9a295d2
         credentials: true,
         methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
         allowedHeaders: "Content-Type,Authorization",
