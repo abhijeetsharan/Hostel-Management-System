@@ -22,7 +22,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || "https://bit-mesra-hostel.vercel.app" || "https://hostel-management-system-sigma.vercel.app",
+        origin: [
+            "https://bit-mesra-hostel.vercel.app",
+            "https://bit-mesra-hostel-admin.vercel.app"
+        ],
         credentials: true,
         methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
         allowedHeaders: "Content-Type,Authorization",
